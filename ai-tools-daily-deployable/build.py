@@ -15,7 +15,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent
 DATA_DIR = ROOT / "data"
 TEMPLATE = ROOT / "v2-template.html"
-OUTPUT = ROOT / "v2-standalone.html"
+OUTPUT = ROOT / "index.html"
 
 
 def main():
