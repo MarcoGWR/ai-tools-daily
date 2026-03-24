@@ -1,0 +1,1046 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 工具日报 — 每日精选</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+/* ========== shadcn/ui inspired design tokens ========== */
+:root {
+  --background: 0 0% 100%;
+  --foreground: 240 10% 3.9%;
+  --card: 0 0% 100%;
+  --card-foreground: 240 10% 3.9%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 240 10% 3.9%;
+  --primary: 240 5.9% 10%;
+  --primary-foreground: 0 0% 98%;
+  --secondary: 240 4.8% 95.9%;
+  --secondary-foreground: 240 5.9% 10%;
+  --muted: 240 4.8% 95.9%;
+  --muted-foreground: 240 3.8% 46.1%;
+  --accent: 240 4.8% 95.9%;
+  --accent-foreground: 240 5.9% 10%;
+  --destructive: 0 84.2% 60.2%;
+  --border: 240 5.9% 90%;
+  --input: 240 5.9% 90%;
+  --ring: 240 5.9% 10%;
+  --radius: 0.75rem;
+
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: var(--font-sans);
+  background: hsl(var(--background));
+  color: hsl(var(--foreground));
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ========== Header ========== */
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: hsla(0, 0%, 100%, 0.8);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  border-bottom: 1px solid hsl(var(--border));
+}
+
+.header-inner {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 24px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: hsl(var(--foreground));
+  flex-shrink: 0;
+}
+
+.logo-mark {
+  width: 28px;
+  height: 28px;
+  background: hsl(var(--foreground));
+  border-radius: 7px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: hsl(var(--primary-foreground));
+  font-size: 14px;
+  font-weight: 800;
+  font-family: var(--font-mono);
+}
+
+.logo h1 {
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+}
+
+.logo span {
+  color: hsl(var(--muted-foreground));
+  font-weight: 400;
+  font-size: 13px;
+  margin-left: 4px;
+}
+
+/* Search */
+.search-wrapper {
+  position: relative;
+  flex: 0 1 360px;
+}
+
+.search-wrapper svg {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 15px;
+  height: 15px;
+  color: hsl(var(--muted-foreground));
+}
+
+.search-input {
+  width: 100%;
+  height: 36px;
+  padding: 0 14px 0 36px;
+  border: 1px solid hsl(var(--border));
+  border-radius: 8px;
+  background: hsl(var(--muted));
+  color: hsl(var(--foreground));
+  font-size: 13px;
+  font-family: var(--font-sans);
+  outline: none;
+  transition: all 0.15s;
+}
+
+.search-input::placeholder { color: hsl(var(--muted-foreground)); }
+.search-input:focus {
+  border-color: hsl(var(--ring));
+  background: hsl(var(--background));
+  box-shadow: 0 0 0 2px hsla(var(--ring), 0.1);
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+/* ========== Buttons (shadcn style) ========== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 32px;
+  padding: 0 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  font-family: var(--font-sans);
+  cursor: pointer;
+  transition: all 0.15s;
+  border: 1px solid transparent;
+  white-space: nowrap;
+}
+
+.btn-default {
+  background: hsl(var(--background));
+  color: hsl(var(--foreground));
+  border-color: hsl(var(--border));
+}
+.btn-default:hover { background: hsl(var(--accent)); }
+
+.btn-ghost {
+  background: transparent;
+  color: hsl(var(--muted-foreground));
+}
+.btn-ghost:hover {
+  background: hsl(var(--accent));
+  color: hsl(var(--accent-foreground));
+}
+
+.btn-primary {
+  background: hsl(var(--foreground));
+  color: hsl(var(--primary-foreground));
+  border: none;
+}
+.btn-primary:hover { opacity: 0.9; }
+
+.btn-sm { height: 28px; padding: 0 10px; font-size: 12px; }
+
+/* ========== Sub-header / Toolbar ========== */
+.toolbar {
+  border-bottom: 1px solid hsl(var(--border));
+  background: hsl(var(--background));
+}
+
+.toolbar-inner {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.toolbar-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.date-nav {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.date-btn {
+  width: 28px;
+  height: 28px;
+  border: 1px solid hsl(var(--border));
+  background: hsl(var(--background));
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: hsl(var(--muted-foreground));
+  font-size: 13px;
+  transition: all 0.15s;
+}
+.date-btn:hover { background: hsl(var(--accent)); color: hsl(var(--foreground)); }
+
+.date-text {
+  font-size: 13px;
+  font-weight: 600;
+  padding: 0 10px;
+  font-family: var(--font-mono);
+  letter-spacing: -0.3px;
+}
+
+.date-text .weekday {
+  font-family: var(--font-sans);
+  color: hsl(var(--muted-foreground));
+  font-weight: 400;
+  margin-left: 4px;
+}
+
+.divider-v {
+  width: 1px;
+  height: 20px;
+  background: hsl(var(--border));
+  margin: 0 4px;
+}
+
+.stat-chip {
+  font-size: 12px;
+  color: hsl(var(--muted-foreground));
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.stat-chip strong {
+  color: hsl(var(--foreground));
+  font-weight: 700;
+  font-family: var(--font-mono);
+}
+
+/* Filter pills */
+.filter-pills {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.pill {
+  height: 28px;
+  padding: 0 12px;
+  border-radius: 14px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s;
+  border: 1px solid hsl(var(--border));
+  background: hsl(var(--background));
+  color: hsl(var(--muted-foreground));
+  font-family: var(--font-sans);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.pill:hover { border-color: hsl(var(--foreground)); color: hsl(var(--foreground)); }
+
+.pill.active {
+  background: hsl(var(--foreground));
+  color: hsl(var(--primary-foreground));
+  border-color: hsl(var(--foreground));
+}
+
+.toolbar-right {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Sort select */
+.sort-group {
+  display: flex;
+  gap: 1px;
+  background: hsl(var(--border));
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.sort-btn {
+  height: 28px;
+  padding: 0 10px;
+  border: none;
+  background: hsl(var(--background));
+  color: hsl(var(--muted-foreground));
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: var(--font-sans);
+  transition: all 0.1s;
+}
+
+.sort-btn:hover { color: hsl(var(--foreground)); }
+
+.sort-btn.active {
+  background: hsl(var(--foreground));
+  color: hsl(var(--primary-foreground));
+}
+
+/* ========== Masonry Waterfall Grid ========== */
+.masonry-container {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 20px 24px 60px;
+}
+
+.masonry {
+  column-count: 5;
+  column-gap: 16px;
+}
+
+/* ========== Card (小红书 style) ========== */
+.card {
+  break-inside: avoid;
+  margin-bottom: 16px;
+  background: hsl(var(--card));
+  border-radius: var(--radius);
+  border: 1px solid hsl(var(--border));
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.card:hover {
+  box-shadow: 0 8px 30px hsla(0, 0%, 0%, 0.08);
+  border-color: hsl(240, 5.9%, 80%);
+  transform: translateY(-2px);
+}
+
+.card-cover {
+  width: 100%;
+  display: block;
+  background: hsl(var(--muted));
+  position: relative;
+  overflow: hidden;
+}
+
+.card-cover img {
+  width: 100%;
+  display: block;
+  object-fit: cover;
+  transition: transform 0.3s;
+}
+
+.card:hover .card-cover img { transform: scale(1.03); }
+
+/* Tags row under title */
+.card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-bottom: 10px;
+}
+
+.card-tag {
+  height: 22px;
+  padding: 0 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  line-height: 1;
+}
+
+.tag-region {
+  background: hsl(var(--muted));
+  color: hsl(var(--muted-foreground));
+}
+
+.badge-编程辅助 { background: hsla(142, 76%, 36%, 0.12); color: #15803d; border: 1px solid hsla(142, 76%, 36%, 0.2); }
+.badge-图像生成 { background: hsla(328, 85%, 58%, 0.12); color: #be185d; border: 1px solid hsla(328, 85%, 58%, 0.2); }
+.badge-视频生成 { background: hsla(262, 83%, 58%, 0.12); color: #7c3aed; border: 1px solid hsla(262, 83%, 58%, 0.2); }
+.badge-办公提效 { background: hsla(213, 93%, 48%, 0.12); color: #1d4ed8; border: 1px solid hsla(213, 93%, 48%, 0.2); }
+.badge-写作翻译 { background: hsla(32, 95%, 44%, 0.12); color: #c2410c; border: 1px solid hsla(32, 95%, 44%, 0.2); }
+.badge-其他 { background: hsla(0, 0%, 45%, 0.12); color: #525252; border: 1px solid hsla(0, 0%, 45%, 0.2); }
+
+/* Price tag inline styles */
+
+.price-tag-免费 { background: hsla(142, 71%, 45%, 0.1); color: #15803d; border: 1px solid hsla(142, 71%, 45%, 0.2); }
+.price-tag-付费 { background: hsl(var(--foreground)); color: hsl(var(--primary-foreground)); }
+.price-tag-免费增值 { background: hsla(213, 93%, 48%, 0.1); color: #1d4ed8; border: 1px solid hsla(213, 93%, 48%, 0.2); }
+
+/* Card body */
+.card-body {
+  padding: 14px;
+}
+
+.card-tool-name {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: hsl(var(--muted-foreground));
+  margin-bottom: 4px;
+  font-family: var(--font-mono);
+}
+
+.card-title {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.5;
+  color: hsl(var(--foreground));
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin-bottom: 10px;
+  letter-spacing: -0.2px;
+}
+
+.card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.card-author {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: hsl(var(--muted-foreground));
+  min-width: 0;
+}
+
+.avatar {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: hsl(var(--muted));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 600;
+  color: hsl(var(--muted-foreground));
+  flex-shrink: 0;
+}
+
+.card-author span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.card-stats {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+  color: hsl(var(--muted-foreground));
+  flex-shrink: 0;
+}
+
+.card-stat {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.card-stat svg {
+  width: 13px;
+  height: 13px;
+}
+
+/* ========== Empty ========== */
+.empty-state {
+  text-align: center;
+  padding: 100px 20px;
+  color: hsl(var(--muted-foreground));
+}
+.empty-state h3 { font-size: 16px; font-weight: 600; color: hsl(var(--foreground)); margin-bottom: 6px; }
+.empty-state p { font-size: 13px; }
+
+/* ========== Modal (shadcn dialog) ========== */
+.dialog-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: hsla(0, 0%, 0%, 0.5);
+  z-index: 200;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(4px);
+  animation: fadeIn 0.15s;
+}
+.dialog-overlay.show { display: flex; }
+
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes slideUp { from { opacity: 0; transform: translateY(8px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
+
+.dialog {
+  background: hsl(var(--card));
+  border-radius: 12px;
+  width: 90%;
+  max-width: 560px;
+  max-height: 85vh;
+  overflow-y: auto;
+  box-shadow: 0 16px 70px hsla(0,0%,0%,0.15);
+  animation: slideUp 0.2s ease-out;
+  border: 1px solid hsl(var(--border));
+}
+
+.dialog-cover {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  display: block;
+}
+
+.dialog-body { padding: 24px; }
+
+.dialog-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.dialog-close {
+  width: 28px;
+  height: 28px;
+  border: 1px solid hsl(var(--border));
+  background: hsl(var(--background));
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  color: hsl(var(--muted-foreground));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-left: 12px;
+  transition: all 0.15s;
+}
+.dialog-close:hover { background: hsl(var(--accent)); }
+
+.dialog-tool-name {
+  font-size: 11px;
+  font-weight: 600;
+  font-family: var(--font-mono);
+  letter-spacing: 0.5px;
+  color: hsl(var(--muted-foreground));
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.dialog-title {
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+  line-height: 1.4;
+}
+
+.dialog-tags {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.dialog-tag {
+  height: 24px;
+  padding: 0 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid hsl(var(--border));
+  color: hsl(var(--muted-foreground));
+}
+
+.dialog-desc {
+  font-size: 14px;
+  line-height: 1.8;
+  color: hsl(var(--muted-foreground));
+  margin-bottom: 16px;
+}
+
+.dialog-feature {
+  background: hsl(var(--muted));
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-size: 13px;
+  color: hsl(var(--foreground));
+  margin-bottom: 20px;
+  border-left: 3px solid hsl(var(--foreground));
+}
+
+.dialog-feature strong { font-weight: 600; }
+
+.dialog-meta {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.meta-card {
+  background: hsl(var(--muted));
+  border-radius: 8px;
+  padding: 10px 14px;
+}
+
+.meta-label {
+  font-size: 11px;
+  color: hsl(var(--muted-foreground));
+  margin-bottom: 2px;
+}
+
+.meta-value {
+  font-size: 13px;
+  font-weight: 600;
+  font-family: var(--font-mono);
+}
+
+.dialog-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.dialog-actions .btn { flex: 1; height: 38px; font-size: 13px; }
+
+/* ========== Footer ========== */
+.footer {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 20px 24px 40px;
+  border-top: 1px solid hsl(var(--border));
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.footer p {
+  font-size: 12px;
+  color: hsl(var(--muted-foreground));
+}
+
+.archive-dates {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.archive-btn {
+  height: 26px;
+  padding: 0 10px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.1s;
+  border: 1px solid hsl(var(--border));
+  background: hsl(var(--background));
+  color: hsl(var(--muted-foreground));
+  font-family: var(--font-mono);
+}
+.archive-btn:hover { border-color: hsl(var(--foreground)); color: hsl(var(--foreground)); }
+.archive-btn.active { background: hsl(var(--foreground)); color: hsl(var(--primary-foreground)); border-color: transparent; }
+
+/* ========== Responsive ========== */
+@media (max-width: 1200px) { .masonry { column-count: 4; } }
+@media (max-width: 960px)  { .masonry { column-count: 3; } }
+@media (max-width: 700px)  {
+  .masonry { column-count: 2; column-gap: 10px; }
+  .masonry-container { padding: 12px 12px 40px; }
+  .card { margin-bottom: 10px; }
+  .header-inner { padding: 0 12px; }
+  .toolbar-inner { padding: 10px 12px; }
+  .search-wrapper { flex: 1 1 180px; }
+  .logo span { display: none; }
+}
+@media (max-width: 420px) {
+  .masonry { column-count: 2; column-gap: 8px; }
+  .card-body { padding: 10px; }
+  .card-title { font-size: 13px; }
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: hsl(var(--border)); border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<!-- ===== Header ===== -->
+<header class="header">
+  <div class="header-inner">
+    <a class="logo" href="#">
+      <div class="logo-mark">AI</div>
+      <h1>工具日报<span>/ Daily Picks</span></h1>
+    </a>
+    <div class="search-wrapper">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+      <input class="search-input" type="text" id="searchInput" placeholder="搜索工具、功能、作者..." oninput="handleSearch(this.value)">
+    </div>
+    <div class="header-right">
+      <button class="btn btn-ghost btn-sm" onclick="window.open('https://github.com')">GitHub</button>
+      <button class="btn btn-default btn-sm">RSS</button>
+    </div>
+  </div>
+</header>
+
+<!-- ===== Toolbar ===== -->
+<div class="toolbar">
+  <div class="toolbar-inner">
+    <div class="toolbar-left">
+      <div class="date-nav">
+        <button class="date-btn" onclick="changeDate(-1)">‹</button>
+        <div class="date-text" id="dateText">2026-03-23 <span class="weekday">周一</span></div>
+        <button class="date-btn" onclick="changeDate(1)">›</button>
+      </div>
+      <div class="divider-v"></div>
+      <div class="stat-chip">收录 <strong id="statTotal">0</strong></div>
+      <div class="stat-chip">互动 <strong id="statInteraction">0</strong></div>
+    </div>
+
+    <div class="filter-pills" id="filterPills"></div>
+
+    <div class="toolbar-right">
+      <div class="sort-group">
+        <button class="sort-btn active" data-sort="hot" onclick="setSort('hot')">热度</button>
+        <button class="sort-btn" data-sort="liked" onclick="setSort('liked')">赞</button>
+        <button class="sort-btn" data-sort="collected" onclick="setSort('collected')">藏</button>
+        <button class="sort-btn" data-sort="comment" onclick="setSort('comment')">评</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== Masonry Grid ===== -->
+<div class="masonry-container">
+  <div class="masonry" id="masonry"></div>
+</div>
+
+<!-- ===== Footer ===== -->
+<footer class="footer">
+  <p>数据来源于小红书公开内容，仅供学习参考 · AI 工具日报 © 2026</p>
+  <div class="archive-dates" id="archiveDates"></div>
+</footer>
+
+<!-- ===== Detail Dialog ===== -->
+<div class="dialog-overlay" id="dialogOverlay" onclick="closeDialog(event)">
+  <div class="dialog" id="dialogContent" onclick="event.stopPropagation()"></div>
+</div>
+
+<script>
+// ===== Inline data =====
+const DATA_STORE = {"2026-03-23": [{"id": "note_001", "tool_name": "Cursor", "tool_type": "编程辅助", "title": "Cursor 彻底改变了我的编程方式，效率提升10倍不夸张", "summary": "AI原生代码编辑器，基于VSCode深度改造，支持多文件上下文理解、自动补全、对话式编程，写代码像聊天一样自然。", "core_feature": "AI原生IDE，对话式编程体验", "platform_url": "https://cursor.sh", "note_url": "https://www.xiaohongshu.com/explore/example001", "author": "代码诗人", "publish_date": "2026-03-23", "liked_count": 4521, "collected_count": 3892, "comment_count": 876, "is_free": "免费增值", "device": "PC", "region": "国外", "cover_image": "https://picsum.photos/seed/cursor/400/530"}, {"id": "note_002", "tool_name": "即梦AI", "tool_type": "图像生成", "title": "字节的即梦AI太强了！免费生成电影级图片，国产之光", "summary": "字节跳动推出的AI图像/视频生成平台，支持文生图、图生图、文生视频，中文理解能力强，免费额度充足。", "core_feature": "国产免费AI创作平台，中文理解顶级", "platform_url": "https://jimeng.jianying.com", "note_url": "https://www.xiaohongshu.com/explore/example002", "author": "AI绘画日记", "publish_date": "2026-03-23", "liked_count": 5678, "collected_count": 4123, "comment_count": 1234, "is_free": "免费", "device": "Web", "region": "国内", "cover_image": "https://picsum.photos/seed/jimeng/400/300"}, {"id": "note_003", "tool_name": "Midjourney V7", "tool_type": "图像生成", "title": "Midjourney V7 实测：细节炸裂，手指终于正常了", "summary": "MJ最新V7模型在人体结构、光影质感上有质的飞跃，支持网页端直接使用，不再需要Discord。", "core_feature": "顶级AI绘画，V7细节史诗级提升", "platform_url": "https://midjourney.com", "note_url": "https://www.xiaohongshu.com/explore/example003", "author": "设计师老张", "publish_date": "2026-03-23", "liked_count": 3421, "collected_count": 2876, "comment_count": 567, "is_free": "付费", "device": "Web", "region": "国外", "cover_image": "https://picsum.photos/seed/midj/400/500"}, {"id": "note_004", "tool_name": "Kimi", "tool_type": "办公提效", "title": "Kimi k2 模型上线！200万字长文处理无压力", "summary": "月之暗面出品，超长上下文处理能力业界领先，适合论文阅读、合同审查、资料整理等场景。", "core_feature": "超长上下文AI助手，200万字无压力", "platform_url": "https://kimi.moonshot.cn", "note_url": "https://www.xiaohongshu.com/explore/example004", "author": "效率控小美", "publish_date": "2026-03-23", "liked_count": 2345, "collected_count": 1987, "comment_count": 456, "is_free": "免费增值", "device": "全平台", "region": "国内", "cover_image": "https://picsum.photos/seed/kimi/400/350"}, {"id": "note_005", "tool_name": "Runway Gen-3", "tool_type": "视频生成", "title": "Runway Gen-3 Alpha Turbo：10秒生成一段电影级视频", "summary": "视频生成领域天花板，支持文生视频、图生视频、运动笔刷控制，生成质量和一致性大幅提升。", "core_feature": "电影级AI视频生成，创意无限", "platform_url": "https://runway.ml", "note_url": "https://www.xiaohongshu.com/explore/example005", "author": "视频创作者联盟", "publish_date": "2026-03-23", "liked_count": 3890, "collected_count": 3456, "comment_count": 789, "is_free": "付费", "device": "Web", "region": "国外", "cover_image": "https://picsum.photos/seed/runway/400/450"}, {"id": "note_006", "tool_name": "通义千问", "tool_type": "写作翻译", "title": "通义千问居然可以一键生成万字长文，质量还不错", "summary": "阿里达摩院大模型，长文写作能力优秀，支持文档解析、翻译、代码生成，免费版功能已经很强。", "core_feature": "阿里免费大模型，长文写作超强", "platform_url": "https://qianwen.aliyun.com", "note_url": "https://www.xiaohongshu.com/explore/example006", "author": "写作提效社", "publish_date": "2026-03-23", "liked_count": 1876, "collected_count": 1543, "comment_count": 345, "is_free": "免费", "device": "全平台", "region": "国内", "cover_image": "https://picsum.photos/seed/tongyi/400/320"}, {"id": "note_007", "tool_name": "Suno V4", "tool_type": "其他", "title": "Suno V4 音乐生成太离谱了，输入歌词直接出成品", "summary": "AI音乐生成工具升级V4，支持完整歌曲结构，音质接近专业级，支持多语言歌词。", "core_feature": "AI音乐创作，歌词到成品一步到位", "platform_url": "https://suno.com", "note_url": "https://www.xiaohongshu.com/explore/example007", "author": "音乐制作人小K", "publish_date": "2026-03-23", "liked_count": 6543, "collected_count": 5678, "comment_count": 1567, "is_free": "免费增值", "device": "Web", "region": "国外", "cover_image": "https://picsum.photos/seed/suno/400/400"}, {"id": "note_008", "tool_name": "Gamma", "tool_type": "办公提效", "title": "告别PPT！Gamma让AI帮你做演示文稿，3分钟搞定", "summary": "AI演示文稿工具，输入主题自动生成排版精美的PPT，支持实时协作和多种导出格式。", "core_feature": "AI一键生成PPT，告别排版地狱", "platform_url": "https://gamma.app", "note_url": "https://www.xiaohongshu.com/explore/example008", "author": "职场加速器", "publish_date": "2026-03-23", "liked_count": 2234, "collected_count": 1890, "comment_count": 432, "is_free": "免费增值", "device": "Web", "region": "国外", "cover_image": "https://picsum.photos/seed/gamma/400/280"}, {"id": "note_009", "tool_name": "可灵AI", "tool_type": "视频生成", "title": "快手可灵AI视频生成：国产视频生成之光！", "summary": "快手推出的AI视频生成工具，支持文生视频和图生视频，运动合理性和画面质量出色。", "core_feature": "国产AI视频生成，运动流畅画质高", "platform_url": "https://kling.kuaishou.com", "note_url": "https://www.xiaohongshu.com/explore/example009", "author": "短视频创作指南", "publish_date": "2026-03-23", "liked_count": 2987, "collected_count": 2345, "comment_count": 678, "is_free": "免费增值", "device": "Web", "region": "国内", "cover_image": "https://picsum.photos/seed/kling/400/520"}, {"id": "note_010", "tool_name": "飞书妙记", "tool_type": "办公提效", "title": "开会再也不用记笔记了！飞书妙记AI总结太香了", "summary": "飞书内置的AI会议助手，自动录音转写+智能摘要+待办提取，会议效率翻倍。", "core_feature": "AI会议助手，自动转写+智能总结", "platform_url": "https://www.feishu.cn/product/minutes", "note_url": "https://www.xiaohongshu.com/explore/example010", "author": "职场效率研究所", "publish_date": "2026-03-23", "liked_count": 1567, "collected_count": 1234, "comment_count": 298, "is_free": "免费增值", "device": "全平台", "region": "国内", "cover_image": "https://picsum.photos/seed/feishu/400/360"}, {"id": "note_011", "tool_name": "Claude", "tool_type": "写作翻译", "title": "Claude 居然比 GPT 更懂中文写作？实测对比来了", "summary": "Anthropic的Claude在长文写作、逻辑推理、代码生成方面表现优异，特别是中文写作风格更自然。", "core_feature": "写作质感最佳的AI大模型", "platform_url": "https://claude.ai", "note_url": "https://www.xiaohongshu.com/explore/example011", "author": "AI测评实验室", "publish_date": "2026-03-23", "liked_count": 4123, "collected_count": 3567, "comment_count": 923, "is_free": "免费增值", "device": "Web", "region": "国外", "cover_image": "https://picsum.photos/seed/claude/400/380"}, {"id": "note_012", "tool_name": "Perplexity", "tool_type": "办公提效", "title": "Perplexity：AI搜索引擎的终极形态，搜索+总结一步到位", "summary": "AI原生搜索引擎，实时联网搜索并自动生成带引用的结构化答案，研究调研效率倍增。", "core_feature": "AI搜索引擎，实时联网+结构化回答", "platform_url": "https://perplexity.ai", "note_url": "https://www.xiaohongshu.com/explore/example012", "author": "搜索达人", "publish_date": "2026-03-23", "liked_count": 3210, "collected_count": 2876, "comment_count": 654, "is_free": "免费增值", "device": "全平台", "region": "国外", "cover_image": "https://picsum.photos/seed/perp/400/340"}, {"id": "note_013", "tool_name": "Pika 2.0", "tool_type": "视频生成", "title": "Pika 2.0视频生成升级！支持物理效果模拟", "summary": "Pika最新版本支持真实物理效果模拟，爆炸、融化、碎裂等特效一键生成，短视频创作利器。", "core_feature": "AI视频特效生成，支持物理效果模拟", "platform_url": "https://pika.art", "note_url": "https://www.xiaohongshu.com/explore/example013", "author": "特效玩家", "publish_date": "2026-03-23", "liked_count": 1876, "collected_count": 1345, "comment_count": 456, "is_free": "免费增值", "device": "Web", "region": "国外", "cover_image": "https://picsum.photos/seed/pika/400/470"}, {"id": "note_014", "tool_name": "讯飞星火", "tool_type": "办公提效", "title": "讯飞星火4.0办公场景实测，语音转写太准了", "summary": "科大讯飞AI大模型，语音识别准确率业界第一，办公场景下的会议转写、文档处理非常实用。", "core_feature": "语音识别顶级，办公会议转写神器", "platform_url": "https://xinghuo.xfyun.cn", "note_url": "https://www.xiaohongshu.com/explore/example014", "author": "效率工具集", "publish_date": "2026-03-23", "liked_count": 987, "collected_count": 765, "comment_count": 198, "is_free": "免费增值", "device": "全平台", "region": "国内", "cover_image": "https://picsum.photos/seed/xunfei/400/310"}, {"id": "note_015", "tool_name": "Bolt.new", "tool_type": "编程辅助", "title": "Bolt.new：浏览器里直接用AI写全栈应用，太疯狂了", "summary": "StackBlitz推出的AI全栈开发工具，在浏览器中通过对话生成完整Web应用，支持一键部署。", "core_feature": "浏览器内AI全栈开发，对话生成应用", "platform_url": "https://bolt.new", "note_url": "https://www.xiaohongshu.com/explore/example015", "author": "全栈开发者", "publish_date": "2026-03-23", "liked_count": 3456, "collected_count": 2890, "comment_count": 734, "is_free": "免费增值", "device": "Web", "region": "国外", "cover_image": "https://picsum.photos/seed/bolt/400/420"}, {"id": "note_016", "tool_name": "Napkin AI", "tool_type": "办公提效", "title": "Napkin AI：一键把文字变成精美图表，再也不用画图了", "summary": "AI自动将文本内容转换为信息图表、流程图、思维导图，支持多种风格导出。", "core_feature": "文字一键转精美图表，告别手动画图", "platform_url": "https://napkin.ai", "note_url": "https://www.xiaohongshu.com/explore/example016", "author": "可视化小达人", "publish_date": "2026-03-23", "liked_count": 2678, "collected_count": 2345, "comment_count": 512, "is_free": "免费增值", "device": "Web", "region": "国外", "cover_image": "https://picsum.photos/seed/napkin/400/290"}], "2026-03-22": [{"id": "note_101", "tool_name": "ChatGPT-4o", "tool_type": "写作翻译", "title": "ChatGPT-4o多模态能力实测，语音对话太自然了", "summary": "OpenAI最新4o模型支持实时语音对话、图片理解、文件分析，响应速度极快，多模态体验顶级。", "core_feature": "多模态AI助手，实时语音+视觉理解", "platform_url": "https://chat.openai.com", "note_url": "https://www.xiaohongshu.com/explore/example101", "author": "AI前线", "publish_date": "2026-03-22", "liked_count": 3456, "collected_count": 2345, "comment_count": 678, "is_free": "免费增值", "device": "全平台", "region": "国外", "cover_image": ""}, {"id": "note_102", "tool_name": "通义万相", "tool_type": "图像生成", "title": "通义万相免费AI绘画，国产良心之作", "summary": "阿里推出的免费AI绘画工具，中文提示词理解准确，支持多种风格，生成速度快。", "core_feature": "国产免费AI绘画，中文提示词友好", "platform_url": "https://wanx.aliyun.com", "note_url": "https://www.xiaohongshu.com/explore/example102", "author": "国产AI推荐官", "publish_date": "2026-03-22", "liked_count": 1234, "collected_count": 876, "comment_count": 234, "is_free": "免费", "device": "Web", "region": "国内", "cover_image": ""}, {"id": "note_103", "tool_name": "Copilot Workspace", "tool_type": "编程辅助", "title": "GitHub Copilot Workspace：从Issue到PR全自动", "summary": "GitHub推出的AI编程工作空间，可以从一个Issue出发自动规划、编码、测试并生成PR。", "core_feature": "AI全自动编程流水线，Issue到PR一步完成", "platform_url": "https://github.com/features/copilot", "note_url": "https://www.xiaohongshu.com/explore/example103", "author": "GitHub深度玩家", "publish_date": "2026-03-22", "liked_count": 2100, "collected_count": 1678, "comment_count": 423, "is_free": "付费", "device": "Web", "region": "国外", "cover_image": ""}, {"id": "note_104", "tool_name": "讯飞星火", "tool_type": "办公提效", "title": "讯飞星火4.0办公场景实测，语音转写太准了", "summary": "科大讯飞的AI大模型，语音识别准确率业界第一，办公场景下的会议转写、文档处理非常实用。", "core_feature": "语音识别顶级，办公会议转写神器", "platform_url": "https://xinghuo.xfyun.cn", "note_url": "https://www.xiaohongshu.com/explore/example104", "author": "效率工具集", "publish_date": "2026-03-22", "liked_count": 987, "collected_count": 765, "comment_count": 198, "is_free": "免费增值", "device": "全平台", "region": "国内", "cover_image": ""}, {"id": "note_105", "tool_name": "Pika 2.0", "tool_type": "视频生成", "title": "Pika 2.0视频生成升级！支持物理效果模拟", "summary": "Pika最新版本支持真实物理效果模拟，爆炸、融化、碎裂等特效一键生成，短视频创作利器。", "core_feature": "AI视频特效生成，支持物理效果模拟", "platform_url": "https://pika.art", "note_url": "https://www.xiaohongshu.com/explore/example105", "author": "特效玩家", "publish_date": "2026-03-22", "liked_count": 1876, "collected_count": 1345, "comment_count": 456, "is_free": "免费增值", "device": "Web", "region": "国外", "cover_image": ""}]};
+
+const availableDates = Object.keys(DATA_STORE).sort().reverse();
+let currentDate = availableDates[0];
+let allTools = [];
+let filteredTools = [];
+let currentSort = 'hot';
+let activeCategory = null;
+let searchQuery = '';
+
+// ===== Init =====
+function init() {
+  allTools = DATA_STORE[currentDate] || [];
+  activeCategory = null;
+  searchQuery = '';
+  document.getElementById('searchInput').value = '';
+  buildFilterPills();
+  applyFilters();
+  updateStats();
+  updateDateDisplay();
+  buildArchiveDates();
+}
+
+// ===== Date =====
+const WD = ['周日','周一','周二','周三','周四','周五','周六'];
+function updateDateDisplay() {
+  const d = new Date(currentDate + 'T00:00:00');
+  document.getElementById('dateText').innerHTML = `${currentDate} <span class="weekday">${WD[d.getDay()]}</span>`;
+}
+
+function changeDate(delta) {
+  const idx = availableDates.indexOf(currentDate);
+  const ni = idx - delta;
+  if (ni >= 0 && ni < availableDates.length) {
+    currentDate = availableDates[ni];
+    allTools = DATA_STORE[currentDate] || [];
+    activeCategory = null;
+    buildFilterPills();
+    applyFilters();
+    updateStats();
+    updateDateDisplay();
+    buildArchiveDates();
+  }
+}
+
+function goToDate(d) {
+  currentDate = d;
+  allTools = DATA_STORE[currentDate] || [];
+  activeCategory = null;
+  buildFilterPills();
+  applyFilters();
+  updateStats();
+  updateDateDisplay();
+  buildArchiveDates();
+}
+
+function buildArchiveDates() {
+  document.getElementById('archiveDates').innerHTML = availableDates.map(d =>
+    `<button class="archive-btn ${d===currentDate?'active':''}" onclick="goToDate('${d}')">${d}</button>`
+  ).join('');
+}
+
+// ===== Filter pills =====
+function buildFilterPills() {
+  const types = [...new Set(allTools.map(t => t.tool_type))];
+  const prices = [...new Set(allTools.map(t => t.is_free))];
+  const regions = [...new Set(allTools.map(t => t.region))];
+
+  const pills = [
+    { label: '全部', value: '__all__', group: 'category' },
+    ...types.map(t => ({ label: t, value: t, group: 'category' })),
+    ...prices.map(p => ({ label: p, value: p, group: 'price' })),
+    ...regions.map(r => ({ label: r, value: r, group: 'region' }))
+  ];
+
+  document.getElementById('filterPills').innerHTML = pills.map(p =>
+    `<button class="pill ${p.value === '__all__' && !activeCategory ? 'active' : ''}" data-group="${p.group}" data-value="${p.value}" onclick="togglePill(this, '${p.group}', '${p.value}')">${p.label}</button>`
+  ).join('');
+}
+
+let activeFilters = { price: new Set(), region: new Set() };
+
+function togglePill(el, group, value) {
+  if (group === 'category') {
+    document.querySelectorAll('.pill[data-group="category"]').forEach(p => p.classList.remove('active'));
+    if (value === '__all__') {
+      activeCategory = null;
+    } else {
+      activeCategory = value;
+    }
+    el.classList.add('active');
+    if (value === '__all__') {
+      document.querySelector('.pill[data-value="__all__"]').classList.add('active');
+    }
+  } else {
+    if (activeFilters[group].has(value)) {
+      activeFilters[group].delete(value);
+      el.classList.remove('active');
+    } else {
+      activeFilters[group].add(value);
+      el.classList.add('active');
+    }
+  }
+  applyFilters();
+}
+
+// ===== Search =====
+function handleSearch(q) {
+  searchQuery = q.trim().toLowerCase();
+  applyFilters();
+}
+
+// ===== Sort & Filter =====
+function getHotScore(t) {
+  return t.liked_count + t.collected_count * 1.5 + t.comment_count * 2;
+}
+
+function applyFilters() {
+  filteredTools = allTools.filter(t => {
+    if (activeCategory && t.tool_type !== activeCategory) return false;
+    if (activeFilters.price.size > 0 && !activeFilters.price.has(t.is_free)) return false;
+    if (activeFilters.region.size > 0 && !activeFilters.region.has(t.region)) return false;
+    if (searchQuery) {
+      const txt = (t.tool_name + t.title + t.summary + t.core_feature + t.author).toLowerCase();
+      if (!txt.includes(searchQuery)) return false;
+    }
+    return true;
+  });
+
+  filteredTools.sort((a, b) => {
+    switch (currentSort) {
+      case 'hot': return getHotScore(b) - getHotScore(a);
+      case 'liked': return b.liked_count - a.liked_count;
+      case 'collected': return b.collected_count - a.collected_count;
+      case 'comment': return b.comment_count - a.comment_count;
+      default: return 0;
+    }
+  });
+
+  renderCards();
+}
+
+function setSort(s) {
+  currentSort = s;
+  document.querySelectorAll('.sort-btn').forEach(b => b.classList.toggle('active', b.dataset.sort === s));
+  applyFilters();
+}
+
+function fmt(n) {
+  if (n >= 10000) return (n/10000).toFixed(1) + 'w';
+  if (n >= 1000) return (n/1000).toFixed(1) + 'k';
+  return n;
+}
+
+// ===== Stats =====
+function updateStats() {
+  document.getElementById('statTotal').textContent = allTools.length;
+  const total = allTools.reduce((s,t) => s + t.liked_count + t.collected_count + t.comment_count, 0);
+  document.getElementById('statInteraction').textContent = fmt(total);
+}
+
+// ===== Render Cards =====
+function renderCards() {
+  const grid = document.getElementById('masonry');
+
+  if (filteredTools.length === 0) {
+    grid.innerHTML = `<div class="empty-state" style="column-span:all"><h3>暂无匹配结果</h3><p>试试调整筛选条件</p></div>`;
+    return;
+  }
+
+  grid.innerHTML = filteredTools.map(t => `
+    <div class="card" onclick="openDialog('${t.id}')">
+      <div class="card-cover">
+        <img src="${t.cover_image}" alt="${t.tool_name}" loading="lazy">
+      </div>
+      <div class="card-body">
+        <div class="card-tool-name">${t.tool_name}</div>
+        <div class="card-title">${t.title}</div>
+        <div class="card-tags">
+          <span class="card-tag tag-type badge-${t.tool_type}">${t.tool_type}</span>
+          <span class="card-tag tag-price price-tag-${t.is_free}">${t.is_free}</span>
+          <span class="card-tag tag-region">${t.region}</span>
+        </div>
+        <div class="card-footer">
+          <div class="card-author">
+            <div class="avatar">${t.author[0]}</div>
+            <span>${t.author}</span>
+          </div>
+          <div class="card-stats">
+            <div class="card-stat">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+              ${fmt(t.liked_count)}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ===== Dialog =====
+function openDialog(id) {
+  const t = allTools.find(i => i.id === id);
+  if (!t) return;
+  const hot = Math.round(getHotScore(t));
+
+  document.getElementById('dialogContent').innerHTML = `
+    <img class="dialog-cover" src="${t.cover_image}" alt="${t.tool_name}">
+    <div class="dialog-body">
+      <div class="dialog-header">
+        <div>
+          <div class="dialog-tool-name">${t.tool_name}</div>
+          <div class="dialog-title">${t.title}</div>
+        </div>
+        <button class="dialog-close" onclick="closeDialog()">✕</button>
+      </div>
+      <div class="dialog-tags">
+        <span class="dialog-tag">${t.tool_type}</span>
+        <span class="dialog-tag">${t.is_free}</span>
+        <span class="dialog-tag">${t.region}</span>
+        <span class="dialog-tag">${t.device}</span>
+      </div>
+      <div class="dialog-desc">${t.summary}</div>
+      <div class="dialog-feature"><strong>核心卖点：</strong>${t.core_feature}</div>
+      <div class="dialog-meta">
+        <div class="meta-card"><div class="meta-label">作者</div><div class="meta-value">@${t.author}</div></div>
+        <div class="meta-card"><div class="meta-label">发布</div><div class="meta-value">${t.publish_date}</div></div>
+        <div class="meta-card"><div class="meta-label">热度</div><div class="meta-value">${fmt(hot)}</div></div>
+        <div class="meta-card"><div class="meta-label">互动</div><div class="meta-value">👍${fmt(t.liked_count)} ⭐${fmt(t.collected_count)} 💬${fmt(t.comment_count)}</div></div>
+      </div>
+      <div class="dialog-actions">
+        ${t.platform_url ? `<a class="btn btn-primary" href="${t.platform_url}" target="_blank" style="text-decoration:none">访问官网</a>` : ''}
+        <a class="btn btn-default" href="${t.note_url}" target="_blank" style="text-decoration:none">查看小红书原帖</a>
+      </div>
+    </div>
+  `;
+  document.getElementById('dialogOverlay').classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeDialog(e) {
+  if (e && e.target !== e.currentTarget && !e.target.classList.contains('dialog-close')) return;
+  document.getElementById('dialogOverlay').classList.remove('show');
+  document.body.style.overflow = '';
+}
+
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDialog(); });
+
+// ===== Go =====
+init();
+</script>
+</body>
+</html>
